@@ -69569,10 +69569,28 @@ class Platform83 extends onecTool_1.OnecTool {
         this.platform = platform;
         this.cache_ = this.getCacheDirs();
     }
+    getProjectName() {
+        const versionParts = this.version.split('.');
+        if (versionParts.length < 2) {
+            throw new Error(`Invalid version format: ${this.version}`);
+        }
+        const major = parseInt(versionParts[0], 10);
+        const minor = parseInt(versionParts[1], 10);
+        if (major === 8 && minor === 5) {
+            return 'Platform85';
+        }
+        else if (major === 8 && minor === 3) {
+            return 'Platform83';
+        }
+        else {
+            throw new Error(`Unsupported version: ${this.version}. Supported versions: 8.3.* and 8.5.*`);
+        }
+    }
     async download() {
         const onegetPlatform = this.getOnegetPlatform();
+        const projectName = this.getProjectName();
         await (0, onegetjs_1.downloadRelease)({
-            project: 'Platform83',
+            project: projectName,
             version: this.version,
             osName: onegetPlatform,
             architecture: 'x64',
